@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+# Foreperiod Analysis
+
+if __name__ == '__main__':
+    print("Foreperiod Analysis")
+
+    # TODO: Read data & Extract features
+    # TODO: Split training & testing data
+    # TODO: Train
+    # TODO: Evaluate

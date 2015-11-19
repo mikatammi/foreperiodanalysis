@@ -13,7 +13,7 @@ config = {
         'version': '0.1',
         'requires': ['nose'],
         'provides': ['foreperiodanalysis'],
-        'scripts': []
+        'scripts': ['bin/fpa']
 }
 
 setup(**config)
