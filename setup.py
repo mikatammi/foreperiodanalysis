@@ -11,7 +11,8 @@ config = {
         'download_url': 'https://github.com/mikatammi/foreperiodanalysis',
         'author_email': 'mikatammi@gmail.com',
         'version': '0.1',
-        'requires': ['nose'],
+        'requires': ['nose',
+                     'pep8'],
         'provides': ['foreperiodanalysis'],
         'scripts': ['bin/fpa']
 }
