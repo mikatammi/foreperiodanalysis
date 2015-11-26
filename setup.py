@@ -15,7 +15,7 @@ config = {
                      'numpy',
                      'matplotlib',
                      'pep8',
-                     'scikit-learn',
+                     'scikit_learn',
                      'scipy'],
         'provides': ['foreperiodanalysis'],
         'packages': ['foreperiodanalysis'],
