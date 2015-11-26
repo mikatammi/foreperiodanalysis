@@ -14,6 +14,7 @@ config = {
         'requires': ['nose',
                      'pep8'],
         'provides': ['foreperiodanalysis'],
+        'packages': ['foreperiodanalysis'],
         'scripts': ['bin/fpa']
 }
 
