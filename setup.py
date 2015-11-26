@@ -12,6 +12,7 @@ config = {
         'author_email': 'mikatammi@gmail.com',
         'version': '0.1',
         'requires': ['nose',
+                     'numpy',
                      'pep8'],
         'provides': ['foreperiodanalysis'],
         'packages': ['foreperiodanalysis'],
