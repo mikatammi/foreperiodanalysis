@@ -1,6 +1,6 @@
 import numpy as np
 from foreperiodanalysis.dataset import GazedataFile
-from scipy.signal import medfilt2d
+from scipy.signal import medfilt
 
 
 def get_gazepositions(trialdata):
@@ -38,13 +38,20 @@ def get_gazepositions(trialdata):
     return tmp_array[either_eyes_valid]
 
 
+def median_filter(gazepositions):
+    # TODO: This does median filtering for separate axis.
+    #       Find out possibly more mathematical way to do this.
+    return np.vstack((medfilt(gazepositions[:, 0]),
+                      medfilt(gazepositions[:, 1]))).T
+
+
 def extract_variance(gazepositions):
-    return medfilt2d(gazepositions).var(axis=0)
+    return median_filter(gazepositions).var(axis=0)
 
 
 def extract_traveled_distance(gazepositions):
     # TODO: Median filtering might round results to zero
-    gz = medfilt2d(gazepositions)
+    gz = median_filter(gazepositions)
 
     gz1 = gz[0:-2]
     gz2 = gz[1:-1]
