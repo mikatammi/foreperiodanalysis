@@ -13,7 +13,8 @@ config = {
         'version': '0.1',
         'requires': ['nose',
                      'numpy',
-                     'pep8'],
+                     'pep8',
+                     'scipy'],
         'provides': ['foreperiodanalysis'],
         'packages': ['foreperiodanalysis'],
         'scripts': ['bin/fpa']
