@@ -77,8 +77,11 @@ def process_gazedata(filename):
     gaze = GazedataFile(filename)
 
     # Remove failed trial data
-    gaze.data = gaze.data[gaze.data['ValidityLeftEye'] < 2]
-    gaze.data = gaze.data[gaze.data['ValidityRightEye'] < 2]
+    left_eye_valid = gaze.data['ValidityLeftEye'] < 2
+    right_eye_valid = gaze.data['ValidityRightEye'] < 2
+    either_eyes_valid = left_eye_valid | right_eye_valid
+
+    gaze.data = gaze.data[either_eyes_valid]
     gaze.data = gaze.data[gaze.data['UserDefined_1'] == 'Face']
     gaze.data = gaze.data[gaze.data['TrialId'] != -1]
 
