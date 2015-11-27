@@ -41,8 +41,10 @@ def get_gazepositions(trialdata):
 def median_filter(gazepositions):
     # TODO: This does median filtering for separate axis.
     #       Find out possibly more mathematical way to do this.
-    return np.vstack((medfilt(gazepositions[:, 0]),
-                      medfilt(gazepositions[:, 1]))).T
+    # TODO: Kernel size 7 should equal to 120 ms but need to
+    #       double check this
+    return np.vstack((medfilt(gazepositions[:, 0], kernel_size=7),
+                      medfilt(gazepositions[:, 1], kernel_size=7))).T
 
 
 def extract_variance(gazepositions):
@@ -84,6 +86,9 @@ def process_gazedata(filename):
     gaze.data = gaze.data[either_eyes_valid]
     gaze.data = gaze.data[gaze.data['UserDefined_1'] == 'Face']
     gaze.data = gaze.data[gaze.data['TrialId'] != -1]
+
+    # TODO: Do not interpolate over 150 ms, drop trials
+    #       with missing data for over 150ms?
 
     trialids = np.unique(gaze.data['TrialId'])
 
