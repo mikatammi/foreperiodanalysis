@@ -11,9 +11,15 @@ config = {
         'download_url': 'https://github.com/mikatammi/foreperiodanalysis',
         'author_email': 'mikatammi@gmail.com',
         'version': '0.1',
-        'requires': ['nose'],
+        'requires': ['nose',
+                     'numpy',
+                     'matplotlib',
+                     'pep8',
+                     'scikit_learn',
+                     'scipy'],
         'provides': ['foreperiodanalysis'],
-        'scripts': []
+        'packages': ['foreperiodanalysis'],
+        'scripts': ['bin/fpa']
 }
 
 setup(**config)

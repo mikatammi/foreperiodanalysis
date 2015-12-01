@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+# Foreperiod Analysis
+
+from foreperiodanalysis.dataset import TBTFile
+from foreperiodanalysis.features import process_gazedata
+import numpy as np
+from multiprocessing import Pool
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.cross_validation import cross_val_score
+import matplotlib.pyplot as plt
+
+
+def read_dataset():
+    # TODO: Some parameter or environment variable for defining dataset
+    #       location
+    DATASET_DIR = '/Users/mika/ICL/FPA data/Kinship/'
+
+    # Read data & Extract features
+    tbt = TBTFile(DATASET_DIR + 'disengagement_results.csv')
+
+    # Select trials from dataset
+    tbt.data = tbt.data[tbt.data['Stimulus'] == 'fearful.bmp']
+    tbt.data = tbt.data[tbt.data['combination'] > 0.0]
+
+    classes = np.array(map(lambda x: 0 if x < 1000 else 1,
+                           tbt.data['combination']))
+
+    gazedata_filenames = np.unique(tbt.data['Filename'])
+    gazedata_full_filenames = map(lambda x: DATASET_DIR + x,
+                                  gazedata_filenames)
+
+    # Process data in multiple processes
+    p = Pool()
+    trials_data = p.map(process_gazedata, gazedata_full_filenames)
+
+    print("Gazedata processed")
+
+    trials = dict(zip(gazedata_filenames, trials_data))
+
+    # Temporary lists for training data
+    X = []
+    yy = []
+
+    for x, y in zip(tbt.data[['Filename', 'Trial_number']], classes):
+        try:
+            X.append(trials[x[0]][x[1]])
+            yy.append(y)
+        except KeyError:
+            pass
+
+    # Convert lists to numpy arrays
+    X = np.array(X)
+    classes = np.array(yy)
+
+    # Feature matrix and class array should have same amount of samples
+    assert X.shape[0] == classes.shape[0]
+
+    return X, classes
+
+
+def plot_data(X, y):
+    plt.scatter(X[:, 0], X[:, 1], c=y)
+    plt.show()
+
+if __name__ == '__main__':
+    print("Foreperiod Analysis")
+
+    X, y = read_dataset()
+
+    # Train
+    classifier = RandomForestClassifier()
+
+    # Do cross validation with Stratified K-Fold
+    # TODO: Check whether it is Stratified K-Fold or Plain K-Fold for
+    #       classifiers
+    scores = cross_val_score(classifier, X, y, cv=5, n_jobs=-1)
+
+    for score in scores:
+        print("Score: %.2f%%" % (score * 100))
